@@ -156,7 +156,7 @@ class SRSEngine {
         risk_level: riskLevel,
         evidence,
         recommendations,
-        appeal_url: `https://orasrs.net/appeal?ip=${ip}`,
+        appeal_url: `https://api.orasrs.net/appeal?ip=${ip}`,
         expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24小时后过期
         disclaimer: 'This is advisory only. Final decision rests with the client.'
       }
