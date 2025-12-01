@@ -1,7 +1,7 @@
 {
-  "name": "srs-protocol",
+  "name": "orasrs-protocol",
   "version": "1.0.0",
-  "description": "SRS (Security Root Service) - 咨询式风险评分服务",
+  "description": "OraSRS (Oracle Security Root Service) - 咨询式风险评分服务",
   "main": "srs-service.js",
   "scripts": {
     "start": "node start-srs-service.js",
@@ -33,10 +33,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/srs-protocol/srs-protocol.git"
+    "url": "https://github.com/orasrs-protocol/orasrs-protocol.git"
   },
   "bugs": {
-    "url": "https://github.com/srs-protocol/srs-protocol/issues"
+    "url": "https://github.com/orasrs-protocol/orasrs-protocol/issues"
   },
-  "homepage": "https://github.com/srs-protocol/srs-protocol#readme"
+  "homepage": "https://github.com/orasrs-protocol/orasrs-protocol#readme"
 }

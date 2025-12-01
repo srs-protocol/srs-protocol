@@ -1,8 +1,8 @@
 /**
- * SRS (Security Root Service) Engine
+ * OraSRS (Oracle Security Root Service) Engine
  * 咨询式风险评分服务引擎
  * 定位为"咨询式服务"，而非"执行式防火墙"
- * SRS 是信用评分机构（如 FICO），不是法院。客户端自己决定是否采取行动。
+ * OraSRS 是信用评分机构（如 FICO），不是法院。客户端自己决定是否采取行动。
  */
 
 class SRSEngine {
@@ -143,7 +143,7 @@ class SRSEngine {
     // 生成推荐策略
     const recommendations = this.generateRecommendations(riskLevel);
 
-    // 创建响应对象
+    // 生成响应对象
     const response = {
       query: { ip, domain },
       response: {
@@ -152,7 +152,7 @@ class SRSEngine {
         risk_level: riskLevel,
         evidence,
         recommendations,
-        appeal_url: `https://srs.net/appeal?ip=${ip}`,
+        appeal_url: `https://orasrs.net/appeal?ip=${ip}`,
         expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24小时后过期
         disclaimer: 'This is advisory only. Final decision rests with the client.'
       }
@@ -375,19 +375,19 @@ class SRSEngine {
   }
 
   /**
-   * 获取SRS响应格式（安全版）
+   * 获取OraSRS响应格式（安全版）
    */
-  async getSRSResponse(ip, domain = null) {
+  async getOraSRSResponse(ip, domain = null) {
     return await this.getRiskAssessment(ip, domain);
   }
 }
 
-// 导出SRS引擎
+// 导出OraSRS引擎
 module.exports = SRSEngine;
 
 // 如果直接运行此文件，启动测试
 if (require.main === module) {
-  console.log('SRS Engine initialized');
+  console.log('OraSRS Engine initialized');
   console.log('This engine provides advisory risk scoring services.');
   console.log('It does NOT directly block traffic - clients make the final decision.');
 }

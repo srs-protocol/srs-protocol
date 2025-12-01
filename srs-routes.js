@@ -1,6 +1,6 @@
 /**
- * SRS (Security Root Service) API Router
- * 实现SRS协议的API端点
+ * OraSRS (Oracle Security Root Service) API Router
+ * 实现OraSRS协议的API端点
  * 遵循咨询式服务模式，提供风险评分而非直接阻断指令
  */
 
@@ -27,17 +27,17 @@ router.get('/query', async (req, res) => {
 
     // 添加免责声明头部
     res.set({
-      'X-SRS-Disclaimer': 'This is advisory only. Final decision rests with the client.',
-      'X-SRS-Compliance': 'GDPR/CCPA compliant - no raw IP storage',
+      'X-OraSRS-Disclaimer': 'This is advisory only. Final decision rests with the client.',
+      'X-OraSRS-Compliance': 'GDPR/CCPA compliant - no raw IP storage',
       'Cache-Control': 'public, max-age=300' // 5分钟缓存
     });
 
     res.json(result);
   } catch (error) {
-    console.error('SRS query error:', error);
+    console.error('OraSRS query error:', error);
     res.status(500).json({
-      error: 'Internal server error during SRS query',
-      code: 'SRS_QUERY_ERROR'
+      error: 'Internal server error during OraSRS query',
+      code: 'OraSRS_QUERY_ERROR'
     });
   }
 });
@@ -72,8 +72,8 @@ router.post('/bulk-query', async (req, res) => {
 
     // 添加免责声明头部
     res.set({
-      'X-SRS-Disclaimer': 'This is advisory only. Final decision rests with the client.',
-      'X-SRS-Compliance': 'GDPR/CCPA compliant - no raw IP storage'
+      'X-OraSRS-Disclaimer': 'This is advisory only. Final decision rests with the client.',
+      'X-OraSRS-Compliance': 'GDPR/CCPA compliant - no raw IP storage'
     });
 
     res.json({
@@ -81,10 +81,10 @@ router.post('/bulk-query', async (req, res) => {
       results
     });
   } catch (error) {
-    console.error('SRS bulk query error:', error);
+    console.error('OraSRS bulk query error:', error);
     res.status(500).json({
-      error: 'Internal server error during SRS bulk query',
-      code: 'SRS_BULK_QUERY_ERROR'
+      error: 'Internal server error during OraSRS bulk query',
+      code: 'OraSRS_BULK_QUERY_ERROR'
     });
   }
 });
@@ -112,16 +112,16 @@ router.get('/lookup/:indicator', async (req, res) => {
 
     // 添加免责声明头部
     res.set({
-      'X-SRS-Disclaimer': 'This is advisory only. Final decision rests with the client.',
-      'X-SRS-Compliance': 'GDPR/CCPA compliant - no raw IP storage'
+      'X-OraSRS-Disclaimer': 'This is advisory only. Final decision rests with the client.',
+      'X-OraSRS-Compliance': 'GDPR/CCPA compliant - no raw IP storage'
     });
 
     res.json(result);
   } catch (error) {
-    console.error('SRS lookup error:', error);
+    console.error('OraSRS lookup error:', error);
     res.status(500).json({
-      error: 'Internal server error during SRS lookup',
-      code: 'SRS_LOOKUP_ERROR'
+      error: 'Internal server error during OraSRS lookup',
+      code: 'OraSRS_LOOKUP_ERROR'
     });
   }
 });
@@ -150,10 +150,10 @@ router.post('/appeal', async (req, res) => {
 
     res.status(201).json(appealResult);
   } catch (error) {
-    console.error('SRS appeal error:', error);
+    console.error('OraSRS appeal error:', error);
     res.status(500).json({
-      error: 'Internal server error during SRS appeal',
-      code: 'SRS_APPEAL_ERROR'
+      error: 'Internal server error during OraSRS appeal',
+      code: 'OraSRS_APPEAL_ERROR'
     });
   }
 });
@@ -174,10 +174,10 @@ router.get('/explain', async (req, res) => {
 
     res.json(explanation);
   } catch (error) {
-    console.error('SRS explain error:', error);
+    console.error('OraSRS explain error:', error);
     res.status(500).json({
-      error: 'Internal server error during SRS explain',
-      code: 'SRS_EXPLAIN_ERROR'
+      error: 'Internal server error during OraSRS explain',
+      code: 'OraSRS_EXPLAIN_ERROR'
     });
   }
 });
@@ -204,10 +204,10 @@ router.delete('/data', async (req, res) => {
       processed_at: new Date().toISOString()
     });
   } catch (error) {
-    console.error('SRS data deletion error:', error);
+    console.error('OraSRS data deletion error:', error);
     res.status(500).json({
-      error: 'Internal server error during SRS data deletion',
-      code: 'SRS_DATA_DELETION_ERROR'
+      error: 'Internal server error during OraSRS data deletion',
+      code: 'OraSRS_DATA_DELETION_ERROR'
     });
   }
 });

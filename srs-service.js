@@ -1,6 +1,6 @@
 /**
- * SRS (Security Root Service) Service
- * 完整的SRS服务实现，包含引擎、API和管理功能
+ * OraSRS (Oracle Security Root Service) Service
+ * 完整的OraSRS服务实现，包含引擎、API和管理功能
  */
 
 const express = require('express');
@@ -9,13 +9,13 @@ const srsRoutes = require('./routes/srs-routes');
 const fs = require('fs').promises;
 const path = require('path');
 
-class SRSService {
+class OraSRSService {
   constructor(config = {}) {
     this.config = {
       port: config.port || 3000,
       host: config.host || '0.0.0.0',
       enableLogging: config.enableLogging !== false,
-      logFile: config.logFile || './logs/srs-service.log',
+      logFile: config.logFile || './logs/orasrs-service.log',
       ...config
     };
     
@@ -38,14 +38,14 @@ class SRSService {
       }
     });
     
-    // SRS API路由
-    this.app.use('/srs/v1', srsRoutes);
+    // OraSRS API路由
+    this.app.use('/orasrs/v1', srsRoutes);
     
     // 健康检查端点
     this.app.get('/health', (req, res) => {
       res.status(200).json({
         status: 'healthy',
-        service: 'SRS (Security Root Service)',
+        service: 'OraSRS (Oracle Security Root Service)',
         timestamp: new Date().toISOString(),
         version: '1.0.0'
       });
@@ -54,15 +54,15 @@ class SRSService {
     // 根路径返回服务信息
     this.app.get('/', (req, res) => {
       res.status(200).json({
-        service: 'SRS (Security Root Service)',
+        service: 'OraSRS (Oracle Security Root Service)',
         description: 'Advisory Risk Scoring Service - Provides risk assessments for IPs and domains. Clients make final decisions based on our recommendations.',
         endpoints: {
-          query: '/srs/v1/query?ip={ip}&domain={domain}',
-          bulkQuery: '/srs/v1/bulk-query',
-          lookup: '/srs/v1/lookup/{indicator}',
-          appeal: '/srs/v1/appeal',
-          explain: '/srs/v1/explain?ip={ip}',
-          dataDeletion: '/srs/v1/data?ip_hash={hash}',
+          query: '/orasrs/v1/query?ip={ip}&domain={domain}',
+          bulkQuery: '/orasrs/v1/bulk-query',
+          lookup: '/orasrs/v1/lookup/{indicator}',
+          appeal: '/orasrs/v1/appeal',
+          explain: '/orasrs/v1/explain?ip={ip}',
+          dataDeletion: '/orasrs/v1/data?ip_hash={hash}',
           health: '/health'
         },
         disclaimer: 'This service provides advisory risk scoring only. Final decisions are made by clients using our recommendations.',
@@ -72,7 +72,7 @@ class SRSService {
     
     // 错误处理中间件
     this.app.use((error, req, res, next) => {
-      console.error('SRS Service Error:', error);
+      console.error('OraSRS Service Error:', error);
       res.status(500).json({
         error: 'Internal server error',
         code: 'INTERNAL_ERROR',
@@ -82,7 +82,7 @@ class SRSService {
   }
 
   /**
-   * 启动SRS服务
+   * 启动OraSRS服务
    */
   async start() {
     return new Promise((resolve, reject) => {
@@ -92,28 +92,28 @@ class SRSService {
           host: this.config.host 
         },
         () => {
-          console.log(`SRS Service listening on ${this.config.host}:${this.config.port}`);
-          console.log('SRS (Security Root Service) - Advisory Risk Scoring Service is now running');
+          console.log(`OraSRS Service listening on ${this.config.host}:${this.config.port}`);
+          console.log('OraSRS (Oracle Security Root Service) - Advisory Risk Scoring Service is now running');
           console.log('Important: This service provides advisory recommendations only, not direct blocking commands.');
           resolve();
         }
       );
 
       this.server.on('error', (error) => {
-        console.error('Failed to start SRS Service:', error);
+        console.error('Failed to start OraSRS Service:', error);
         reject(error);
       });
     });
   }
 
   /**
-   * 停止SRS服务
+   * 停止OraSRS服务
    */
   async stop() {
     if (this.server) {
       return new Promise((resolve) => {
         this.server.close(() => {
-          console.log('SRS Service stopped');
+          console.log('OraSRS Service stopped');
           resolve();
         });
       });
@@ -121,14 +121,14 @@ class SRSService {
   }
 
   /**
-   * 获取SRS引擎实例
+   * 获取OraSRS引擎实例
    */
   getEngine() {
     return this.engine;
   }
 
   /**
-   * 记录SRS服务日志
+   * 记录OraSRS服务日志
    */
   async logEvent(eventType, data) {
     if (!this.config.enableLogging) return;
@@ -142,7 +142,7 @@ class SRSService {
     try {
       await fs.appendFile(this.config.logFile, JSON.stringify(logEntry) + '\n');
     } catch (error) {
-      console.error('Failed to write SRS log:', error);
+      console.error('Failed to write OraSRS log:', error);
     }
   }
 
@@ -193,30 +193,30 @@ class SRSService {
   }
 }
 
-// 如果直接运行此文件，启动SRS服务
+// 如果直接运行此文件，啟動OraSRS服務
 if (require.main === module) {
-  const srsService = new SRSService({
-    port: 3006, // 使用专用端口以避免与主服务器冲突
+  const orasrsService = new OraSRSService({
+    port: 3006, // 使用專用端口以避免與主服務器衝突
     enableLogging: true
   });
   
-  srsService.start()
+  orasrsService.start()
     .then(() => {
-      console.log('SRS Service started successfully on port 3006');
+      console.log('OraSRS Service started successfully on port 3006');
       console.log('Access the service at: http://localhost:3006');
-      console.log('SRS API endpoints available at: http://localhost:3006/srs/v1');
+      console.log('OraSRS API endpoints available at: http://localhost:3006/orasrs/v1');
     })
     .catch(error => {
-      console.error('Failed to start SRS Service:', error);
+      console.error('Failed to start OraSRS Service:', error);
       process.exit(1);
     });
   
-  // 优雅关闭
+  // 优雅關閉
   process.on('SIGINT', async () => {
-    console.log('\nShutting down SRS Service...');
-    await srsService.stop();
+    console.log('\nShutting down OraSRS Service...');
+    await orasrsService.stop();
     process.exit(0);
   });
 }
 
-module.exports = SRSService;
+module.exports = OraSRSService;

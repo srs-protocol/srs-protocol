@@ -1,12 +1,12 @@
 /**
- * SRS (Security Root Service) Engine - 测试套件
+ * OraSRS (Oracle Security Root Service) Engine - 测试套件
  * 测试咨询式风险评分服务的各项功能
  */
 
 const SRSEngine = require('./srs-engine');
 
 async function runTests() {
-  console.log('🧪 开始测试 SRS 引擎功能...\n');
+  console.log('🧪 开始测试 OraSRS 引擎功能...\n');
   
   const srsEngine = new SRSEngine();
   
@@ -163,7 +163,7 @@ async function runTests() {
   console.log('🎉 所有测试完成！');
   
   // 总结
-  console.log('\n📋 SRS 引擎实现总结:');
+  console.log('\n📋 OraSRS 引擎实现总结:');
   console.log('   ✅ 咨询式服务模式 - 提供风险评分而非直接阻断');
   console.log('   ✅ 分级响应策略 - 根据风险等级提供不同推荐');
   console.log('   ✅ 公共服务豁免 - 关键服务永不拦截');
