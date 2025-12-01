@@ -1,16 +1,39 @@
-## Hi there 👋
+# SRS Protocol (Security Root Service)
+> A privacy-first, federated security decision protocol.
 
-<!--
-**srs-protocol/srs-protocol** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![GitHub Discussions](https://img.shields.io/github/discussions/SRS协议/srs-protocol)](https://github.com/SRS协议/srs-protocol/discussions)
 
-Here are some ideas to get you started:
+## 🔍 什么是 SRS？
+SRS 是一种轻量、去中心化的安全决策协议。它允许网络设备在面临未知流量时，通过查询权威服务获取风险评估建议，辅助本地策略执行。
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+> ⚠️ **核心原则**：  
+> SRS 是 **咨询式服务**（Advisory），不直接阻断流量。最终决策权始终保留在客户端。
+
+## 📚 协议规范
+- [v0.1 规范文档](spec/v0.1.md)（中文/英文）
+- [设计哲学](docs/design.md)
+- [API 接口](api.md)
+
+## 🧩 客户端库
+- Node.js: `npm install @srs-client`
+- Python: `pip install srs-client`
+
+## 🌐 使用场景
+- 边缘防火墙（pfSense, OPNsense）
+- Web 应用防火墙（WAF）
+- IoT/工业控制系统
+- 去中心化网络节点（Web3）
+
+## 🛡️ 安全与隐私
+- IP 匿名化处理
+- 不收集原始日志
+- 公共服务豁免机制
+
+## 🤝 贡献与社区
+- 提问或建议：[GitHub Discussions](https://github.com/SRS协议/srs-protocol/discussions)
+- 提交 PR 或 Issue
+- 加入 Telegram 社区（待建）
+
+## 📄 许可证
+本项目采用 [Apache License 2.0](LICENSE) 开源。
