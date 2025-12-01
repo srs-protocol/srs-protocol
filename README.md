@@ -1,110 +1,39 @@
-# SRS (Security Root Service) 协议
+# SRS Protocol (Security Root Service)
+> A privacy-first, federated security decision protocol.
 
-SRS (Security Root Service) 是一个咨询式风险评分服务，旨在为互联网安全决策提供权威参考。与传统的阻断式防火墙不同，SRS 提供风险评估和建议，由客户端自主决定是否执行相应措施。
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![GitHub Discussions](https://img.shields.io/github/discussions/SRS协议/srs-protocol)](https://github.com/SRS协议/srs-protocol/discussions)
 
-## 设计原则
+## 🔍 什么是 SRS？
+SRS 是一种轻量、去中心化的安全决策协议。它允许网络设备在面临未知流量时，通过查询权威服务获取风险评估建议，辅助本地策略执行。
 
-### 1. 咨询式服务模式
-- **错误设计**: SRS 返回 `{ action: "BLOCK" }`
-- **正确设计**: SRS 返回 `{ risk_score: 0.92, evidence: ["ddos_bot", "scan_24h"] }`
-- **客户端强制执行** → **客户端自主决策是否拦截**
+> ⚠️ **核心原则**：  
+> SRS 是 **咨询式服务**（Advisory），不直接阻断流量。最终决策权始终保留在客户端。
 
-> 类比：SRS 是信用评分机构（如 FICO），不是法院。客户端（如银行）自己决定是否采取行动。
+## 📚 协议规范
+- [v0.1 规范文档](spec/v0.1.md)（中文/英文）
+- [设计哲学](docs/design.md)
+- [API 接口](api.md)
 
-### 2. 内置多重保护机制
+## 🧩 客户端库
+- Node.js: `npm install @srs-client`
+- Python: `pip install srs-client`
 
-#### (1) 分级响应策略
-- 不对所有服务一刀切
-- 关键服务（如医疗、政府）默认放行
+## 🌐 使用场景
+- 边缘防火墙（pfSense, OPNsense）
+- Web 应用防火墙（WAF）
+- IoT/工业控制系统
+- 去中心化网络节点（Web3）
 
-#### (2) 自动衰减与申诉通道
-- 风险分随时间衰减（如 24 小时后降级）
-- 提供公开申诉接口
+## 🛡️ 安全与隐私
+- IP 匿名化处理
+- 不收集原始日志
+- 公共服务豁免机制
 
-#### (3) 透明化与可审计
-- 所有标记记录上链（或公开日志）
-- 提供 `GET /srs/explain?ip=1.2.3.4` 返回决策依据
+## 🤝 贡献与社区
+- 提问或建议：[GitHub Discussions](https://github.com/SRS协议/srs-protocol/discussions)
+- 提交 PR 或 Issue
+- 加入 Telegram 社区（待建）
 
-### 3. 公共服务豁免原则
-
-在 SRS 策略中硬编码关键公共服务白名单，永不拦截：
-
-| 服务类型 | 示例域名/IP |
-|---------|------------|
-| 政府 | .gov, .mil, 国家税务/社保 IP 段 |
-| 医疗 | 医院官网、急救系统 |
-| 金融基础设施 | SWIFT、央行支付系统 |
-| 基础通信 | DNS 根服务器、NTP 池 |
-
-## API 端点
-
-### 风险查询
-```
-GET /srs/v1/query?ip={ip}&domain={domain}
-```
-
-### 批量查询
-```
-POST /srs/v1/bulk-query
-```
-
-### 快速查询
-```
-GET /srs/v1/lookup/{indicator}
-```
-
-### 申诉接口
-```
-POST /srs/v1/appeal
-```
-
-### 透明化接口
-```
-GET /srs/v1/explain?ip={ip}
-```
-
-### GDPR/CCPA数据删除
-```
-DELETE /srs/v1/data?ip_hash={hash}
-```
-
-## 快速开始
-
-### 安装依赖
-
-```bash
-npm install
-```
-
-### 启动服务
-
-```bash
-npm start
-```
-
-服务将启动在 `http://localhost:3006`。
-
-### 运行测试
-
-```bash
-npm test
-```
-
-## 实现特点
-
-1. **去中心化**: 基于节点联邦学习的威胁情报
-2. **隐私优先**: 差分隐私保护，本地数据处理
-3. **开源可验证**: 完全开源，全球审计
-4. **标准兼容**: 支持STIX/TAXII、RPZ等开放标准
-
-## 法律与合规
-
-SRS严格遵循GDPR/CCPA等隐私法规，仅存储IP哈希而非原始IP，并提供数据删除接口。SRS仅提供风险评估和建议，最终的安全决策由客户端做出。
-
-## 贡献
-
-欢迎提交PR和Issue来改进SRS协议。我们致力于构建一个更加安全、透明和公正的互联网基础设施。
-
-## 许可证
-
-MIT License
+## 📄 许可证
+本项目采用 [Apache License 2.0](LICENSE) 开源。
