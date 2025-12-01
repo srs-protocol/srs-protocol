@@ -139,8 +139,12 @@ class StructuredLogger {
     
     // 确保日志目录存在
     const logDir = path.dirname(this.logFile);
-    if (!fs.existsSync(logDir)) {
-      fs.mkdirSync(logDir, { recursive: true });
+    try {
+      // 尝试创建日志目录
+      require('fs').mkdirSync(logDir, { recursive: true });
+    } catch (e) {
+      // 如果无法创建目录，记录错误但不中断
+      console.warn(`无法创建日志目录 ${logDir}:`, e.message);
     }
   }
 
