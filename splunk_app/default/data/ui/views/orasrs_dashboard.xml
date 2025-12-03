@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- OraSRS v2.0 Splunk App Configuration -->
+<openerp>
+    <data>
+        <!-- Main Dashboard for OraSRS Threat Intelligence -->
+        <dashboard>
+            <label>OraSRS v2.0 Threat Intelligence Dashboard</label>
+            <description>Real-time threat intelligence from OraSRS v2.0 decentralized network</description>
+            
+            <row>
+                <panel>
+                    <title>Threat Intelligence Overview</title>
+                    <chart>
+                        <search>
+                            <query>
+                                index="orasrs" 
+                                | timechart count by threat_level
+                            </query>
+                        </search>
+                        <option name="charting.chart">column</option>
+                        <option name="charting.drilldown">all</option>
+                    </chart>
+                </panel>
+                
+                <panel>
+                    <title>Recent Threats</title>
+                    <table>
+                        <search>
+                            <query>
+                                index="orasrs" 
+                                | table _time threat_id source_ip threat_type threat_level credibility_score context
+                                | sort -_time
+                                | head 10
+                            </query>
+                        </search>
+                        <option name="drilldown">cell</option>
+                        <format type="color" field="threat_level">
+                            <color value="Info">#62b3b2</color>
+                            <color value="Warning">#f5a623</color>
+                            <color value="Critical">#e74c3c</color>
+                            <color value="Emergency">#c0392b</color>
+                        </format>
+                    </table>
+                </panel>
+            </row>
+            
+            <row>
+                <panel>
+                    <title>Threat Origins by Geography</title>
+                    <viz type="geoviz">
+                        <search>
+                            <query>
+                                index="orasrs" 
+                                | geostats count by source_ip
+                            </query>
+                        </search>
+                    </viz>
+                </panel>
+                
+                <panel>
+                    <title>Threat Types Distribution</title>
+                    <chart>
+                        <search>
+                            <query>
+                                index="orasrs" 
+                                | chart count by threat_type
+                            </query>
+                        </search>
+                        <option name="charting.chart">pie</option>
+                    </chart>
+                </panel>
+            </row>
+            
+            <row>
+                <panel>
+                    <title>Consensus Verification Status</title>
+                    <chart>
+                        <search>
+                            <query>
+                                index="orasrs" 
+                                | eval consensus_status = if(consensus_confirmed==1, "Verified", "Unverified")
+                                | timechart count by consensus_status
+                            </query>
+                        </search>
+                        <option name="charting.chart">area</option>
+                    </chart>
+                </panel>
+                
+                <panel>
+                    <title>Top Threat Sources</title>
+                    <table>
+                        <search>
+                            <query>
+                                index="orasrs" 
+                                | stats count as threat_count by source_ip
+                                | sort -threat_count
+                                | head 10
+                            </query>
+                        </search>
+                    </table>
+                </panel>
+            </row>
+        </dashboard>
+    </data>
+</openerp>

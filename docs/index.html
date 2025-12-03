@@ -3,250 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OraSRS (Open & Advisory Risk Scoring Service) 协议</title>
+    <title>OraSRS v2.0 - 去中心化威胁情报协议</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
             color: #333;
-        }
-        .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #f8f9fa;
         }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-        }
-        .section {
-            margin-bottom: 25px;
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
         }
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         .feature-card {
-            background-color: #ecf0f1;
-            padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #3498db;
-        }
-        .api-endpoint {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 10px;
-            border-radius: 4px;
-            font-family: monospace;
-            margin: 5px 0;
-        }
-        .compliance {
-            background-color: #e8f5e9;
-            padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #27ae60;
-        }
-        .principle {
-            background-color: #fef9e7;
-            padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #f39c12;
-        }
-        .demo-intro {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            padding: 20px;
+            background: white;
+            padding: 1.5rem;
             border-radius: 8px;
-            text-align: center;
-            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
         }
-        .demo-button {
-            display: inline-block;
-            background-color: #f1c40f;
+        .api-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .contract-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
             color: #2c3e50;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 6px;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+        .tab.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
             font-weight: bold;
-            margin-top: 10px;
-            transition: all 0.3s;
         }
-        .demo-button:hover {
-            background-color: #f39c12;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        .tab-content {
+            display: none;
         }
-        .api-info {
-            background-color: #e8f4f8;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            border-left: 4px solid #3498db;
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>OraSRS (Open & Advisory Risk Scoring Service) 协议</h1>
-        
-        <div class="demo-intro">
-            <h2>OraSRS API 实时演示</h2>
-            <p>Base URL: https://api.orasrs.net | 超时时间: 30000ms</p>
-            <a href="demo.html" class="demo-button">查看在线演示</a>
+    <div class="header">
+        <h1>🛡️ OraSRS v2.0</h1>
+        <h2>去中心化威胁情报与协调防御协议</h2>
+        <p>Oracle Security Root Service - Oracle安全根服务</p>
+    </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <h3>三层架构</h3>
+            <p>边缘层、共识层、智能层的去中心化架构，确保全球威胁同步。</p>
         </div>
-        
-        <div class="section">
-            <h2>概述</h2>
-            <p>OraSRS (Open & Advisory Risk Scoring Service) 是一个咨询式风险评分服务，旨在为互联网安全决策提供权威参考。与传统的阻断式防火墙不同，OraSRS 提供风险评估和建议，由客户端自主决定是否执行相应措施。</p>
+        <div class="feature-card">
+            <h3>国密算法</h3>
+            <p>支持SM2/SM3/SM4国密算法，满足中国网络安全合规要求。</p>
         </div>
-        
-        <div class="api-info">
-            <h3>API 功能演示</h3>
-            <div class="feature-card">
-                <h4>1️⃣ 健康检查</h4>
-                <p>[OraSRS] 发送请求: GET /health</p>
-                <p>[OraSRS] 收到响应: 200 /health</p>
-                <p>✅ 状态: healthy</p>
-            </div>
-            <div class="feature-card">
-                <h4>2️⃣ IP风险查询</h4>
-                <p>[OraSRS] 发送请求: GET /query</p>
-                <p>[OraSRS] 收到响应: 200 /query</p>
-                <p>[OraSRS] 数据已缓存: /query?ip=8.8.8.8</p>
-                <p>✅ 风险评分: 0.1 | ✅ 风险等级: low</p>
-            </div>
-            <div class="feature-card">
-                <h4>3️⃣ 安全决策示例</h4>
-                <p>✅ 决策: allow</p>
-                <p>✅ 说明: Critical service (public_services) is always allowed per OraSRS policy</p>
-            </div>
-            <div class="feature-card">
-                <h4>4️⃣ 批量查询</h4>
-                <p>[OraSRS] 发送请求: POST /bulk-query</p>
-                <p>[OraSRS] 收到响应: 200 /bulk-query</p>
-                <p>✅ 结果数量: 2</p>
-            </div>
-            <div class="feature-card">
-                <h4>5️⃣ 快速查询</h4>
-                <p>[OraSRS] 发送请求: GET /lookup/1.1.1.1</p>
-                <p>[OraSRS] 收到响应: 200 /lookup/1.1.1.1</p>
-                <p>✅ 指标: 1.1.1.1 | ✅ 风险评分: 0.1</p>
-            </div>
-            <div class="feature-card">
-                <h4>6️⃣ 威胁情报</h4>
-                <p>[OraSRS] 发送请求: GET /threat-intel</p>
-                <p>[OraSRS] 收到响应: 200 /threat-intel</p>
-                <p>✅ 情报数量: 2</p>
-            </div>
-            <div class="feature-card">
-                <h4>7️⃣ 缓存统计</h4>
-                <p>✅ 缓存大小: 1</p>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>设计原则</h2>
-            
-            <div class="principle">
-                <h3>咨询式服务模式</h3>
-                <p><strong>错误设计</strong>: OraSRS 返回 <code>{ action: "BLOCK" }</code></p>
-                <p><strong>正确设计</strong>: OraSRS 返回 <code>{ risk_score: 0.92, evidence: ["ddos_bot", "scan_24h"] }</code></p>
-                <p><strong>客户端强制执行</strong> → <strong>客户端自主决策是否拦截</strong></p>
-                <p>类比：OraSRS 是信用评分机构（如 FICO），不是法院。客户端（如银行）自己决定是否采取行动。</p>
-            </div>
-            
-            <div class="principle">
-                <h3>内置多重保护机制</h3>
-                <ul>
-                    <li><strong>分级响应策略</strong>：不对所有服务一刀切，关键服务（如医疗、政府）默认放行</li>
-                    <li><strong>自动衰减与申诉通道</strong>：风险分随时间衰减（如 24 小时后降级）</li>
-                    <li><strong>透明化与可审计</strong>：所有标记记录上链（或公开日志）</li>
-                </ul>
-            </div>
-            
-            <div class="principle">
-                <h3>公共服务豁免原则</h3>
-                <p>在 OraSRS 策略中硬编码关键公共服务白名单，永不拦截：</p>
-                <ul>
-                    <li><strong>政府</strong>：.gov, .mil, 国家税务/社保 IP 段</li>
-                    <li><strong>医疗</strong>：医院官网、急救系统</li>
-                    <li><strong>金融基础设施</strong>：SWIFT、央行支付系统</li>
-                    <li><strong>基础通信</strong>：DNS 根服务器、NTP 池</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>API 端点</h2>
-            <div class="api-endpoint">GET /orasrs/v1/query?ip={ip}&domain={domain}</div>
-            <div class="api-endpoint">POST /orasrs/v1/bulk-query</div>
-            <div class="api-endpoint">GET /orasrs/v1/lookup/{indicator}</div>
-            <div class="api-endpoint">POST /orasrs/v1/appeal</div>
-            <div class="api-endpoint">GET /orasrs/v1/explain?ip={ip}</div>
-            <div class="api-endpoint">DELETE /orasrs/v1/data?ip_hash={hash}</div>
-        </div>
-        
-        <div class="section">
-            <h2>核心功能</h2>
-            <div class="features">
-                <div class="feature-card">
-                    <h3>风险评估</h3>
-                    <p>提供详细的IP和域名风险评分，包含风险等级、证据来源和置信度</p>
-                </div>
-                <div class="feature-card">
-                    <h3>关键服务豁免</h3>
-                    <p>自动豁免政府、医疗、金融基础设施等公共服务，防止误伤</p>
-                </div>
-                <div class="feature-card">
-                    <h3>申诉机制</h3>
-                    <p>提供公开申诉接口，允许用户在被误标记时提交申诉</p>
-                </div>
-                <div class="feature-card">
-                    <h3>透明化</h3>
-                    <p>提供决策依据查询接口，让用户了解被标记的原因</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="compliance">
-            <h2>合规性与隐私保护</h2>
-            <ul>
-                <li>严格遵循GDPR/CCPA隐私法规</li>
-                <li>仅存储IP哈希而非原始IP</li>
-                <li>提供数据删除接口</li>
-                <li>不直接阻断流量，仅提供建议</li>
-            </ul>
-        </div>
-        
-        <div class="section">
-            <h2>实现特点</h2>
-            <ul>
-                <li><strong>去中心化</strong>：基于节点联邦学习的威胁情报</li>
-                <li><strong>隐私优先</strong>：差分隐私保护，本地数据处理</li>
-                <li><strong>开源可验证</strong>：完全开源，全球审计</li>
-                <li><strong>标准兼容</strong>：支持STIX/TAXII、RPZ等开放标准</li>
-            </ul>
-        </div>
-        
-        <div class="section">
-            <h2>新增功能</h2>
-            <ul>
-                <li><strong>联邦学习</strong>：支持多节点威胁情报安全聚合，保护各节点数据隐私</li>
-                <li><strong>API认证与速率限制</strong>：提供API密钥管理和速率限制机制，防止滥用</li>
-                <li><strong>全面监控</strong>：集成Prometheus指标收集和Grafana可视化</li>
-                <li><strong>容器化部署</strong>：支持Docker和Docker Compose一键部署</li>
-                <li><strong>CI/CD流水线</strong>：完整的持续集成和持续部署自动化</li>
-            </ul>
+        <div class="feature-card">
+            <h3>不可篡改存证</h3>
+            <p>所有威胁证据在区块链上永久存储，确保司法举证能力。</p>
         </div>
     </div>
+
+    <div class="api-section">
+        <h2>🔧 API 接口</h2>
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('threat-api')">威胁情报API</div>
+            <div class="tab" onclick="showTab('blockchain-api')">区块链API</div>
+            <div class="tab" onclick="showTab('agent-api')">代理管理API</div>
+        </div>
+
+        <div id="threat-api" class="tab-content active">
+            <h3>提交威胁报告</h3>
+            <div class="code-block">
+POST /api/v2/threats/submit<br><br>
+{<br>
+&nbsp;&nbsp;"threatType": "DDoS",<br>
+&nbsp;&nbsp;"sourceIP": "192.168.1.100",<br>
+&nbsp;&nbsp;"targetIP": "10.0.0.1",<br>
+&nbsp;&nbsp;"threatLevel": "Critical",<br>
+&nbsp;&nbsp;"context": "SYN flood attack detected",<br>
+&nbsp;&nbsp;"evidenceHash": "sm3_hash_value",<br>
+&nbsp;&nbsp;"geolocation": "Shanghai, China",<br>
+&nbsp;&nbsp;"networkFlow": "TCP SYN flood"<br>
+}
+            </div>
+        </div>
+
+        <div id="blockchain-api" class="tab-content">
+            <h3>区块链威胁证据合约</h3>
+            <p>智能合约确保威胁证据的不可篡改性和司法举证能力。</p>
+            <div class="code-block">
+// ThreatEvidence.sol<br>
+function submitThreatReport(<br>
+&nbsp;&nbsp;ThreatReportData memory reportData,<br>
+&nbsp;&nbsp;uint256 nonce<br>) external onlyAuthorizedAgent {<br>
+&nbsp;&nbsp;// 提交威胁证据到区块链<br>
+}<br><br>
+
+function verifyThreatReport(string memory threatId) external onlyAuthorizedValidator {<br>
+&nbsp;&nbsp;// 验证威胁报告<br>
+}
+            </div>
+        </div>
+
+        <div id="agent-api" class="tab-content">
+            <h3>代理状态查询</h3>
+            <div class="code-block">
+GET /api/v2/agent/status<br><br>
+{<br>
+&nbsp;&nbsp;"agentId": "agent-001",<br>
+&nbsp;&nbsp;"version": "2.0.0",<br>
+&nbsp;&nbsp;"uptime": 86400,<br>
+&nbsp;&nbsp;"threatCount": 150,<br>
+&nbsp;&nbsp;"reputation": 0.95,<br>
+&nbsp;&nbsp;"p2pConnected": true<br>
+}
+            </div>
+        </div>
+    </div>
+
+    <div class="contract-section">
+        <h2>🔗 威胁证据存证合约</h2>
+        <p>OraSRS v2.0威胁证据存证合约确保所有威胁数据永久存储在区块链上，提供不可篡改的司法举证能力。</p>
+        
+        <h3>合约特性</h3>
+        <ul>
+            <li><strong>防重放攻击</strong> - 使用nonce机制防止重复提交</li>
+            <li><strong>权限控制</strong> - 严格的代理和验证器权限管理</li>
+            <li><strong>多方验证</strong> - 需要多个验证器确认以确保准确性</li>
+            <li><strong>国密算法支持</strong> - 设计支持SM2/SM3国密算法</li>
+            <li><strong>合规性</strong> - 支持不同区域的合规要求</li>
+        </ul>
+
+        <h3>核心结构</h3>
+        <div class="code-block">
+struct ThreatAttestation {<br>
+&nbsp;&nbsp;string id;                    // 威胁报告ID<br>
+&nbsp;&nbsp;uint256 timestamp;            // 时间戳<br>
+&nbsp;&nbsp;string sourceIP;              // 威胁源IP<br>
+&nbsp;&nbsp;string targetIP;              // 目标IP<br>
+&nbsp;&nbsp;ThreatType threatType;        // 威胁类型<br>
+&nbsp;&nbsp;ThreatLevel threatLevel;      // 威胁级别<br>
+&nbsp;&nbsp;string context;               // 上下文<br>
+&nbsp;&nbsp;string evidenceHash;          // 证据哈希<br>
+&nbsp;&nbsp;bool verified;                // 是否已验证<br>
+&nbsp;&nbsp;uint256 verificationCount;    // 验证次数<br>
+}
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>

@@ -2,100 +2,115 @@
 
 本指南说明如何使用 OraSRS 协议的增强功能，包括共识机制、质押、声誉系统等。
 
-## 1. 初始化 SRS 引擎
+## 1. 初始化 OraSRS v2.0 引擎
 
 ```javascript
-const SRSEngine = require('./srs-engine');
+const OrasrsEngine = require('./orasrs-engine');
 
-// 初始化带增强功能的 SRS 引擎
-const srsEngine = new SRSEngine({
-  consensus: {
-    minStakeAmount: 10000,      // 最小质押门槛: 10,000 ORA
-    maxConsensusNodes: 21,      // 最大共识节点数: 21
-    stakeLockPeriod: 7 * 24 * 60 * 60 * 1000, // 质押锁定期: 7天
-    slashPenaltyRate: 1.0,      // 作恶罚没比例: 100%
-    offlinePenaltyRate: 0.05    // 离线罚没比例: 5%/天
+// 初始化 OraSRS v2.0 协调防御引擎
+const orasrsEngine = new OrasrsEngine({
+  edgeAgent: {
+    maxMemory: 5 * 1024 * 1024,  // 最大内存: 5MB
+    privacyLevel: 'gdpr',        // 隐私级别: gdpr/ccpa/china/global
+    enableNetflow: true,         // 启用网络流监控
+    enableSyscall: true,         // 启用系统调用监控
+    enableTlsInspect: true,      // 启用TLS检查
+    enableGeoFence: true         // 启用地理围栏
   },
-  governance: {
-    emergencyPowers: true       // 启用紧急熔断权
+  consensusLayer: {
+    regionalChain: 'auto',       // 区域链: auto/china/global
+    enableSmCrypto: true,        // 启用国密算法
+    enableEd25519: true,         // 启用国际算法
+    evidenceRetention: 180       // 证据保留天数
   },
-  security: {
-    useSM2: false,
-    useSM3: false,
-    useSM4: true,              // 启用SM4加密
-    dataLocation: 'CN'         // 数据存储在中国
+  intelligenceFabric: {
+    enableP2p: true,            // 启用P2P网络
+    enableCisaAis: false,       // 启用CISA AIS接入
+    enableVirusTotal: false,    // 启用VirusTotal接入
+    enableMisp: false,          // 启用MISP接入
+    enableAlienVault: false     // 启用AlienVault OTX接入
   },
-  edgeCache: {
-    minStakeAmount: 100,        // 边缘节点最小质押: 100 ORA
-    cacheTTL: 5 * 60 * 1000,   // 缓存有效期: 5分钟
-    challengeThreshold: 3       // 挑战阈值: 3个节点
+  complianceEngine: {
+    autoRegion: true,           // 自动区域合规
+    enableGdpr: true,           // 启用GDPR合规
+    enableCcpa: true,           // 启用CCPA合规
+    enableCyberSecurityLaw: true // 启用网络安全法合规
   }
 });
 ```
 
-## 2. 节点质押与管理
+## 2. Agent 部署与管理
 
-### 2.1 共识节点质押
+### 2.1 边缘Agent部署
 
 ```javascript
-// 共识节点质押
-const identityInfo = {
-  businessLicense: "91110000000000000X",  // 营业执照号
-  blockchainFilingNumber: "京网信备XXX号",  // 区块链备案号
-  passedNodeTest: true,                    // 通过节点能力测试
+// 部署边缘Agent
+const agentConfig = {
+  region: 'CN',                 // 部署区域
+  complianceMode: 'cybersecurity_law', // 合规模式
+  privacyLevel: 24,             // IP匿名化级别 (/24)
+  maxMemory: 5 * 1024 * 1024,   // 最大内存 5MB
+  reputationThreshold: 0.7      // 声誉阈值
 };
 
 try {
-  const result = srsEngine.stake(
-    'node-abc123',           // 节点ID
-    15000,                   // 质押金额 (ORA)
-    identityInfo             // 身份信息
+  const result = orasrsEngine.deployEdgeAgent(
+    'agent-001',                // Agent ID
+    agentConfig                 // Agent配置
   );
-  console.log('质押成功:', result);
+  console.log('边缘Agent部署成功:', result);
 } catch (error) {
-  console.error('质押失败:', error.message);
+  console.error('边缘Agent部署失败:', error.message);
 }
 ```
 
-### 2.2 边缘缓存节点质押
+### 2.2 Agent 配置管理
 
 ```javascript
-// 边缘缓存节点质押
+// 更新Agent配置
 try {
-  const result = srsEngine.stakeEdgeNode(
-    'edge-node-xyz789',      // 边缘节点ID
-    500,                     // 质押金额 (ORA)
-    { location: 'Beijing', type: 'cache' }  // 节点信息
+  const result = orasrsEngine.updateAgentConfig(
+    'agent-001',                // Agent ID
+    { 
+      privacyLevel: 16,          // 调整IP匿名化级别
+      enableNetflow: true,       // 启用网络流监控
+      enableSyscall: false       // 禁用系统调用监控（性能考虑）
+    }
   );
-  console.log('边缘节点质押成功:', result);
+  console.log('Agent配置更新成功:', result);
 } catch (error) {
-  console.error('边缘节点质押失败:', error.message);
+  console.error('Agent配置更新失败:', error.message);
 }
 ```
 
 ## 3. 声誉系统
 
-### 3.1 更新节点声誉
+### 3.1 更新Agent声誉
 
 ```javascript
-// 更新节点声誉
+// 更新Agent声誉
 const performanceData = {
-  uptime: 0.98,                    // 在线率
-  correct: true,                   // 验证是否正确
-  challengeResponseTime: 150,      // 挑战响应时间(ms)
-  submittedThreatIntel: true       // 提交威胁情报
+  detectionAccuracy: 0.95,         // 检测准确率
+  responseTime: 50,                // 响应时间(ms)
+  evidenceQuality: 0.92,           // 证据质量
+  complianceAdherence: 1.0,        // 合规遵循度
+  falsePositiveRate: 0.02          // 误报率
 };
 
-const newReputation = srsEngine.updateNodeReputation('node-abc123', performanceData);
-console.log(`节点声誉更新为: ${newReputation}`);
+const newReputation = orasrsEngine.updateAgentReputation('agent-001', performanceData);
+console.log(`Agent声誉更新为: ${newReputation}`);
 ```
 
-### 3.2 获取节点状态
+### 3.2 获取Agent状态
 
 ```javascript
-// 获取节点状态
-const nodeStatus = srsEngine.getNodeStatus('node-abc123');
-console.log('节点状态:', nodeStatus);
+// 获取Agent状态
+const agentStatus = orasrsEngine.getAgentStatus('agent-001');
+console.log('Agent状态:', agentStatus);
+
+// 获取全局声誉统计
+const reputationStats = orasrsEngine.getReputationStats();
+console.log('声誉统计:', reputationStats);
 ```
 
 ## 4. 治理机制
@@ -141,65 +156,95 @@ const haltResult = srsEngine.emergencyHalt('检测到51%攻击');
 console.log('紧急熔断结果:', haltResult);
 ```
 
-## 5. 缓存与挑战机制
+## 5. 三层架构操作
 
-### 5.1 缓存操作
+### 5.1 初始化三层架构
 
 ```javascript
-// 设置边缘缓存
-srsEngine.setEdgeCache('ip-risk-1.2.3.4', riskAssessmentData, 'edge-node-xyz789');
-
-// 获取边缘缓存
-const cachedResult = srsEngine.getFromEdgeCache('ip-risk-1.2.3.4');
+// 初始化OraSRS v2.0三层架构
+await orasrsEngine.initializeThreeTierArchitecture();
 ```
 
-### 5.2 提交缓存挑战
+### 5.2 边缘层操作
 
 ```javascript
-// 提交缓存挑战
-srsEngine.submitCacheChallenge(
-  'challenge-001',
-  'ip-risk-1.2.3.4',      // 目标缓存键
-  'node-validator-555',    // 挑战者ID
-  '数据过期且不一致'       // 挑战理由
+// 配置边缘Agent
+const edgeConfig = {
+  agentId: 'edge-agent-001',
+  maxMemory: 5 * 1024 * 1024,    // 5MB内存限制
+  privacyLevel: 'gdpr',          // GDPR隐私级别
+  enabledModules: {
+    netflow: true,               // 网络流监控
+    syscall: true,               // 系统调用监控
+    tlsInspect: true,            // TLS检查
+    geoFence: true               // 地理围栏
+  }
+};
+
+// 部署边缘Agent
+await orasrsEngine.deployEdgeAgent(edgeConfig);
+```
+
+### 5.3 共识层操作
+
+```javascript
+// 提交威胁证据到共识层
+const threatEvidence = {
+  sourceIP: '192.168.1.10',
+  targetIP: '10.0.0.5',
+  threatType: 'ddos_attack',
+  threatLevel: 'critical',
+  context: 'SYN flood detected',
+  evidenceHash: 'blake3_hash_value',
+  geolocation: 'Shanghai, China',
+  timestamp: Date.now()
+};
+
+// 根据区域自动选择合适的链
+const submissionResult = await orasrsEngine.submitToConsensusLayer(
+  threatEvidence,
+  'auto'  // 自动选择区域链
 );
 
-// 其他节点支持挑战
-srsEngine.addChallengeSupport('challenge-001', 'node-validator-666');
-srsEngine.addChallengeSupport('challenge-001', 'node-validator-777');
+console.log('威胁证据提交结果:', submissionResult);
 ```
 
-## 6. 三层架构操作
-
-### 6.1 初始化架构
+### 5.4 智能层操作
 
 ```javascript
-// 初始化三层架构
-await srsEngine.initializeArchitecture();
+// 获取全局威胁情报
+const globalThreatIntel = await orasrsEngine.getIntelligenceFabricData();
+
+// P2P威胁验证
+const verificationResult = await orasrsEngine.p2pThreatVerification(
+  'threat-id-12345',
+  threatEvidence
+);
+
+console.log('P2P验证结果:', verificationResult);
+
+// 驱动下游防御系统
+await orasrsEngine.driveDownstreamDefenseSystems({
+  threatLevel: 'critical',
+  targetIP: '192.168.1.10',
+  action: 'block'
+});
 ```
 
-### 6.2 查询处理（通过三层架构）
+### 5.5 架构状态监控
 
 ```javascript
-// 通过三层架构处理查询（自动使用边缘缓存并回退到根网络）
-const riskAssessment = await srsEngine.processQueryThroughArchitecture('1.2.3.4', 'example.com');
-console.log('风险评估结果:', riskAssessment);
-```
-
-### 6.3 架构状态监控
-
-```javascript
-// 获取架构状态
-const status = srsEngine.getArchitectureStatus();
-console.log('架构状态:', status);
+// 获取三层架构状态
+const architectureStatus = orasrsEngine.getThreeTierStatus();
+console.log('三层架构状态:', architectureStatus);
 
 // 系统健康检查
-const health = srsEngine.architectureHealthCheck();
+const health = orasrsEngine.architectureHealthCheck();
 console.log('健康检查结果:', health);
 
-// 执行跨层审计
-const auditReport = await srsEngine.performCrossLayerAudit();
-console.log('跨层审计报告:', auditReport);
+// 执行跨层合规审计
+const complianceAudit = await orasrsEngine.performCrossLayerComplianceAudit();
+console.log('跨层合规审计报告:', complianceAudit);
 ```
 
 ## 7. 安全与合规
@@ -275,132 +320,250 @@ const adapterRegistry = {
   }
 };
 
-## 11. 国密算法合约集成
+## 11. OraSRS v2.0 威胁情报协议集成
 
-### 11.1 部署国密质押合约
+### 11.1 威胁情报合约部署
 
-国密版质押合约需要部署在支持国密算法的国产联盟链上（如长安链、FISCO BCOS）：
+OraSRS v2.0威胁情报合约需要部署在支持智能合约的区块链网络上：
 
 ```javascript
-// 连接到支持国密算法的链
-const web3 = new Web3('http://chainmaker-node:8545'); // 或其他国密链端点
+// 连接到支持威胁情报的链
+const web3 = new Web3('http://chainmaker-node:8545'); // 或其他支持威胁情报的链端点
 
-// 部署合约
-const stakingContract = new web3.eth.Contract(OrasrsStakingGmContract.abi);
-const deployedContract = await stakingContract
+// 部署威胁情报合约
+const threatIntelContract = new web3.eth.Contract(OrasrsThreatIntelContract.abi);
+const deployedContract = await threatIntelContract
   .deploy({ 
-    data: OrasrsStakingGmContract.bytecode,
+    data: OrasrsThreatIntelContract.bytecode,
     arguments: [governanceCommitteeAddress]
   })
-  .send({ from: deployerAddress, gas: 6000000 });
+  .send({ from: deployerAddress, gas: 8000000 });
+
+console.log('威胁情报合约部署成功:', deployedContract.options.address);
 ```
 
-### 11.2 节点质押（国密签名版）
+### 11.2 威胁报告提交
 
 ```javascript
-// 使用国密算法生成签名
-const nodeId = 'node-abc123';
-const amount = web3.utils.toWei('15000', 'ether');
-const nodeType = 0; // 0=根层, 1=分区层, 2=边缘层
+// 使用威胁情报合约提交威胁报告
+const threatReport = {
+  sourceIP: '192.168.1.10',
+  targetIP: '10.0.0.5',
+  threatType: 'ddos_attack',
+  threatLevel: 2, // 0=Info, 1=Warning, 2=Critical, 3=Emergency
+  context: 'SYN flood attack detected',
+  evidenceHash: 'a1b2c3d4e5f6...',
+  geolocation: 'Shanghai, China',
+  networkFlow: 'source_port: 1024-65535, dest_port: 80'
+};
 
-// 准备质押数据
-const stakeData = {
-  nodeId: nodeId,
-  amount: amount,
-  nodeType: nodeType,
-  businessLicenseHash: sm3Hash(licenseNumber),
-  filingNumberHash: sm3Hash(filingNumber),
+// 提交威胁报告
+const result = await deployedContract.methods
+  .submitThreatReport(
+    threatReport.threatType,
+    threatReport.sourceIP,
+    threatReport.targetIP,
+    threatReport.threatLevel.toString(),
+    threatReport.context,
+    threatReport.evidenceHash,
+    threatReport.geolocation,
+    threatReport.networkFlow
+  )
+  .send({ from: threatSensorAddress });
+
+console.log('威胁报告提交结果:', result);
+```
+
+### 11.3 威胁验证与查询
+
+```javascript
+// 验证威胁报告（仅授权验证器可调用）
+await deployedContract.methods
+  .verifyThreatReport('threat_192.168.1.10_1701234567')
+  .send({ from: validatorAddress });
+
+// 获取特定威胁报告
+const threatReport = await deployedContract.methods
+  .getThreatReport('threat_192.168.1.10_1701234567')
+  .call();
+
+console.log('威胁报告详情:', threatReport);
+
+// 获取全局威胁列表
+const globalThreatList = await deployedContract.methods
+  .getGlobalThreatList()
+  .call();
+
+console.log('全局威胁列表:', globalThreatList);
+```
+
+### 11.4 威胁情报合约集成（增强版）
+
+```javascript
+// 结合质押合约和威胁情报合约的完整操作
+const fullIntegration = async () => {
+  // 获取节点信息，检查是否为威胁传感器
+  const nodeInfo = await deployedContract.methods
+    .getNodeInfo(nodeAddress)
+    .call();
+    
+  if (nodeInfo.node.isThreatSensor) {
+    console.log('节点是威胁传感器，启用威胁检测功能');
+    
+    // 启动威胁检测代理
+    const threatAgent = {
+      version: nodeInfo.node.agentVersion,
+      deploymentType: nodeInfo.node.deploymentType,
+      lastThreatReport: nodeInfo.node.lastThreatReport
+    };
+    
+    console.log('威胁代理配置:', threatAgent);
+  }
+};
+```
+
+## 12. OraSRS v2.0 协调防御系统集成
+
+### 12.1 部署多链存证系统
+
+OraSRS v2.0多链存证系统需要部署在支持国密算法的区域链上：
+
+```javascript
+// 连接到区域链（自动选择）
+const chainConnector = new ChainConnector({
+  region: 'auto',  // 自动识别部署区域
+  chains: {
+    china: 'chainmaker-node:8545',      // 长安链端点
+    global: 'polygon-rpc-endpoint'      // Polygon端点
+  }
+});
+
+// 部署威胁证据存证合约
+const threatEvidenceContract = new chainConnector.Contract(ThreatEvidence.abi);
+const deployedContract = await threatEvidenceContract
+  .deploy({ 
+    data: ThreatEvidence.bytecode,
+    arguments: [governanceAddress, complianceEngineAddress]
+  })
+  .send({ from: deployerAddress, gas: 8000000 });
+```
+
+### 12.2 威胁证据提交（国密签名版）
+
+```javascript
+// 使用国密算法生成威胁证据签名
+const threatReport = {
+  sourceIP: '192.168.1.10',
+  targetIP: '10.0.0.5',
+  threatType: 'ddos_attack',
+  threatLevel: 2, // 0=Info, 1=Warning, 2=Critical, 3=Emergency
+  context: 'SYN flood attack detected',
+  evidenceHash: 'blake3_hash_value',
+  geolocation: 'Shanghai, China',
+  networkFlow: 'source_port: 1024-65535, dest_port: 80',
   timestamp: Date.now()
 };
 
-// 使用SM2生成签名
-const sm3HashValue = sm3(JSON.stringify(stakeData));
+// 准备证据数据并使用SM2签名
+const evidenceData = {
+  ...threatReport,
+  agentId: 'edge-agent-001',
+  complianceTag: 'gdpr_v2.1'
+};
+
+// 使用SM3哈希和SM2签名
+const sm3HashValue = sm3(JSON.stringify(evidenceData));
 const sm2Signature = generateSm2Signature(sm3HashValue, privateKey);
 
-// 提交质押交易
+// 提交威胁证据
 const result = await deployedContract.methods
-  .stakeWithGmSign(
-    nodeId,
-    amount,
+  .submitThreatEvidence(
+    evidenceData.threatType,
+    evidenceData.sourceIP,
+    evidenceData.targetIP,
+    evidenceData.threatLevel,
+    evidenceData.context,
+    evidenceData.evidenceHash,
+    evidenceData.geolocation,
+    evidenceData.networkFlow,
     sm2Signature,
-    sm3HashValue,
-    Date.now(), // nonce
-    sm3Hash(licenseNumber),
-    sm3Hash(filingNumber),
-    nodeType
+    sm3HashValue
   )
-  .send({ from: nodeAddress, value: amount });
+  .send({ from: agentAddress });
 
-console.log('质押交易结果:', result);
+console.log('威胁证据提交结果:', result);
 ```
 
-### 11.3 验证节点信息
+### 12.3 获取威胁情报
 
 ```javascript
-// 获取节点信息
-const nodeInfo = await deployedContract.methods
-  .getNodeInfo(nodeAddress)
+// 获取特定威胁证据
+const threatEvidence = await deployedContract.methods
+  .getThreatEvidence('threat-id-12345')
   .call();
 
-console.log('节点信息:', nodeInfo);
+console.log('威胁证据详情:', threatEvidence);
 
-// 获取共识节点列表
-const consensusNodes = await deployedContract.methods
-  .getConsensusNodes()
+// 获取区域威胁列表
+const regionalThreatList = await deployedContract.methods
+  .getRegionalThreatList('EU')
   .call();
 
-console.log('共识节点列表:', consensusNodes);
+console.log('区域威胁列表:', regionalThreatList);
 ```
 
-### 11.4 挑战与验证
+### 12.4 P2P验证集成
 
 ```javascript
-// 提交缓存挑战
+// 提交P2P验证请求
 await deployedContract.methods
-  .submitCacheChallenge(
-    cacheKey,
-    '数据过期或不一致',
-    challengeData
+  .submitP2pVerification(
+    'threat-id-12345',
+    verificationEvidence,
+    geolocationData
   )
-  .send({ from: challengerAddress });
+  .send({ from: verifierAddress });
 
-// 验证挑战结果（仅授权验证器可调用）
-await deployedContract.methods
-  .resolveChallenge(
-    cacheKey,
-    challengedNodeAddress,
-    true, // 挑战是否成功
-    [challenger1, challenger2, challenger3]
-  )
-  .send({ from: validatorAddress });
-```
-
-### 11.5 声誉系统集成
-
-```javascript
-// 更新节点声誉（仅授权验证器可调用）
-await deployedContract.methods
-  .updateReputation(nodeAddress, reputationDelta)
-  .send({ from: validatorAddress });
-
-// 获取合约统计信息
-const stats = await deployedContract.methods
-  .getContractStats()
+// 获取验证结果（仅授权验证器可调用）
+const verificationResult = await deployedContract.methods
+  .getVerificationResult('threat-id-12345')
   .call();
 
-console.log('合约统计:', stats);
+console.log('P2P验证结果:', verificationResult);
 ```
 
-### 11.6 提取质押金
+### 12.5 合规审计集成
 
 ```javascript
-// 申请提取质押金
-await deployedContract.methods
-  .requestWithdrawal(withdrawalAmount)
-  .send({ from: nodeAddress });
+// 执行合规审计（仅监管机构可调用）
+const auditReport = await deployedContract.methods
+  .performComplianceAudit('2025-01-01', '2025-01-31')
+  .call();
 
-// 执行提取（锁定期后）
-await deployedContract.methods
-  .withdraw()
-  .send({ from: nodeAddress });
+console.log('合规审计报告:', auditReport);
 ```
+
+### 12.6 驱动下游防御系统
+
+```javascript
+// 生成并推送威胁情报到下游系统
+await deployedContract.methods
+  .pushThreatIntelligenceToDownstream({
+    threatLevel: 'CRITICAL',
+    targetIP: '192.168.1.10',
+    action: 'BLOCK',
+    evidenceTxId: 'tx-hash-12345'
+  })
+  .send({ from: intelligenceFabricAddress });
+
+// 生成SIEM兼容的日志
+const siemLog = generateCefFormatLog({
+  threatLevel: 'CRITICAL',
+  sourceIP: '192.168.1.10',
+  targetIP: '10.0.0.5',
+  threatType: 'DDoS',
+  orasrsTxId: 'tx-hash-12345'
+});
+
+console.log('SIEM日志:', siemLog);
+````

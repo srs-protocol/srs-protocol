@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <field>
+        <name>OraSRS v2.0 Threat Intelligence Configuration</name>
+        <type>title</type>
+    </field>
+    
+    <field>
+        <name>Enable OraSRS Integration</name>
+        <type>boolean</type>
+        <bindstovariable>$config['orasrs']['enabled']</bindstovariable>
+        <help>Enable integration with OraSRS v2.0 threat intelligence network</help>
+    </field>
+    
+    <field>
+        <name>API Endpoint</name>
+        <type>input</type>
+        <bindstovariable>$config['orasrs']['api_endpoint']</bindstovariable>
+        <help>URL of the OraSRS API endpoint (e.g., https://api.orasrs.example.com)</help>
+    </field>
+    
+    <field>
+        <name>API Key</name>
+        <type>password</type>
+        <bindstovariable>$config['orasrs']['api_key']</bindstovariable>
+        <help>API key for authenticating with OraSRS service</help>
+    </field>
+    
+    <field>
+        <name>Update Interval (seconds)</name>
+        <type>input</type>
+        <bindstovariable>$config['orasrs']['update_interval']</bindstovariable>
+        <help>How often to fetch new threat intelligence (default: 300 seconds)</help>
+    </field>
+    
+    <field>
+        <name>Block Malicious IPs</name>
+        <type>boolean</type>
+        <bindstovariable>$config['orasrs']['block_malicious_ips']</bindstovariable>
+        <help>Automatically block IPs flagged as malicious by OraSRS</help>
+    </field>
+    
+    <field>
+        <name>Log Threats</name>
+        <type>boolean</type>
+        <bindstovariable>$config['orasrs']['log_threats']</bindstovariable>
+        <help>Log threats detected by OraSRS to system logs</help>
+    </field>
+    
+    <field>
+        <name>Credibility Threshold</name>
+        <type>input</type>
+        <bindstovariable>$config['orasrs']['credibility_threshold']</bindstovariable>
+        <help>Minimum credibility score for blocking (0.0 to 1.0, default: 0.7)</help>
+    </field>
+    
+    <field>
+        <name>Enable CISA AIS Feed</name>
+        <type>boolean</type>
+        <bindstovariable>$config['orasrs']['upstream_sources']['cisa_ais']</bindstovariable>
+        <help>Enable integration with CISA AIS upstream threat feed</help>
+    </field>
+    
+    <field>
+        <name>Save Settings</name>
+        <type>submit</type>
+        <value>Save</value>
+    </field>
+</form>

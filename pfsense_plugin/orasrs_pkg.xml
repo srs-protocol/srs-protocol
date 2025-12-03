@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pkgmanifest>
+    <name>orasrs-threat-intelligence</name>
+    <version>2.0.0</version>
+    <pkgname>OraSRS v2.0 Threat Intelligence</pkgname>
+    <maintainer>orasrs-protocol@example.com</maintainer>
+    <www>https://orasrs.org</www>
+    <comment>Integration with OraSRS v2.0 decentralized threat intelligence network</comment>
+    <description>
+        OraSRS v2.0 Threat Intelligence Plugin for pfSense.
+        Integrates with the decentralized threat intelligence network,
+        enabling real-time threat detection and blocking based on
+        consensus-verified intelligence and upstream sources like CISA AIS.
+    </description>
+    <license>
+        <name>MIT License</name>
+        <url>https://opensource.org/licenses/MIT</url>
+    </license>
+    <configurationfile>/usr/local/pkg/orasrs_plugin.conf</configurationfile>
+    <additional_files>1</additional_files>
+    <categories>
+        <category>Security</category>
+    </categories>
+    <dependencies>
+        <osversion>2.5</osversion>
+    </dependencies>
+</pkgmanifest>

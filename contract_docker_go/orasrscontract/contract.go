@@ -1,4 +1,4 @@
-package main
+package orasrscontract
 
 import (
 	"encoding/json"
@@ -98,6 +98,10 @@ type OrasrsStakingContract struct {
 func (c *OrasrsStakingContract) InitContract() error {
 	ctx := contract.GetContext()
 
+	// 调试日志：显示接收到的所有参数
+	args := ctx.GetArgs()
+	fmt.Printf("InitContract received args: %+v\n", args)
+
 	// 设置合约状态为活跃
 	err := ctx.PutObject([]byte(ContractStateKey), []byte(strconv.Itoa(int(Active))))
 	if err != nil {
@@ -106,18 +110,30 @@ func (c *OrasrsStakingContract) InitContract() error {
 
 	// 初始化 owner（调用者地址）
 	caller := ctx.GetCallerAddress()
+	fmt.Printf("Contract caller (owner): %s\n", caller)
 	err = ctx.PutObject([]byte(OwnerKey), []byte(caller))
 	if err != nil {
 		return fmt.Errorf("failed to set owner: %v", err)
 	}
 
-	// 初始化治理委员会地址（从参数获取）
-	governanceAddrBytes := ctx.GetArgs()["governance_address"]
-	if governanceAddrBytes == nil {
-		return fmt.Errorf("governance address not provided")
+	// 兼容腾讯云和SDK的治理地址参数格式
+	var governanceAddr string
+
+	// 方式1: 腾讯云"快速上链"格式 (_arg0)
+	if arg0 := args["_arg0"]; arg0 != nil {
+		governanceAddr = string(arg0)
+		fmt.Printf("Using governance address from _arg0: %s\n", governanceAddr)
+	} else if govAddrBytes := args["governance_address"]; govAddrBytes != nil {
+		// 方式2: SDK 直连格式 (governance_address)
+		governanceAddr = string(govAddrBytes)
+		fmt.Printf("Using governance address from governance_address: %s\n", governanceAddr)
+	} else {
+		// 如果没有提供治理地址，则使用调用者地址作为默认值
+		fmt.Println("No governance address provided, using caller address as governance address")
+		governanceAddr = caller
 	}
 
-	governanceAddr := string(governanceAddrBytes)
+	// 保存治理地址
 	err = ctx.PutObject([]byte(GovernanceKey), []byte(governanceAddr))
 	if err != nil {
 		return fmt.Errorf("failed to set governance: %v", err)
@@ -142,6 +158,7 @@ func (c *OrasrsStakingContract) InitContract() error {
 		return fmt.Errorf("failed to initialize edge nodes list: %v", err)
 	}
 
+	fmt.Println("Contract initialized successfully")
 	return nil
 }
 

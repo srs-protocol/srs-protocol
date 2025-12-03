@@ -1,0 +1,159 @@
+commonfields:
+  id: OraSRS
+  version: -1
+name: OraSRS v2.0 Threat Intelligence
+display: OraSRS v2.0 Threat Intelligence
+category: Utilities
+description: Integration with OraSRS v2.0 decentralized threat intelligence network. Provides real-time threat data, consensus-verified intelligence, and integration with upstream sources like CISA AIS.
+configuration:
+- name: url
+  type: 0
+  required: true
+  display: OraSRS API URL
+  help: The URL to the OraSRS v2.0 API endpoint
+- name: api_key
+  type: 4
+  required: true
+  display: API Key
+  help: API key for authenticating with OraSRS API
+- name: insecure
+  type: 8
+  required: false
+  display: Trust any certificate (not secure)
+  help: Whether to trust any certificate when making HTTPS requests
+- name: proxy
+  type: 8
+  required: false
+  display: Use system proxy
+  help: Whether to use the system proxy when making requests
+script:
+  script: ''
+  type: python
+  subtype: python3
+  commands:
+  - name: orasrs-get-threat-intelligence
+    display: Get Threat Intelligence
+    description: Retrieve threat intelligence from the OraSRS v2.0 network
+    arguments:
+    - name: threat_id
+      description: Specific threat ID to retrieve
+      required: false
+      default: None
+    - name: limit
+      description: Maximum number of threats to retrieve
+      required: false
+      default: '50'
+    outputs:
+    - contextPath: OraSRS.Threat.ID
+      description: Threat ID
+    - contextPath: OraSRS.Threat.ThreatType
+      description: Type of threat
+    - contextPath: OraSRS.Threat.ThreatLevel
+      description: Threat level (Info, Warning, Critical, Emergency)
+    - contextPath: OraSRS.Threat.SourceIP
+      description: Source IP of the threat
+    - contextPath: OraSRS.Threat.TargetIP
+      description: Target IP of the threat
+    - contextPath: OraSRS.Threat.Timestamp
+      description: Timestamp of the threat
+    - contextPath: OraSRS.Threat.CredibilityScore
+      description: Credibility score of the threat
+    - contextPath: OraSRS.Threat.ConsensusVerified
+      description: Whether the threat was verified by consensus
+    - contextPath: OraSRS.Threat.Context
+      description: Additional context about the threat
+    - contextPath: OraSRS.Threat.EvidenceHash
+      description: Hash of threat evidence
+  - name: orasrs-get-consensus-verification
+    display: Get Consensus Verification
+    description: Retrieve consensus verification status for a specific threat
+    arguments:
+    - name: threat_id
+      description: Threat ID to verify
+      required: true
+    outputs:
+    - contextPath: OraSRS.Consensus.ThreatID
+      description: Threat ID
+    - contextPath: OraSRS.Consensus.ConsensusStatus
+      description: Consensus verification status
+    - contextPath: OraSRS.Consensus.ConfidenceScore
+      description: Confidence score of consensus
+    - contextPath: OraSRS.Consensus.TotalVerifiers
+      description: Total number of verifiers
+    - contextPath: OraSRS.Consensus.ConsensusPercentage
+      description: Percentage of verifiers agreeing
+  - name: orasrs-submit-threat-evidence
+    display: Submit Threat Evidence
+    description: Submit threat evidence to the OraSRS network
+    arguments:
+    - name: source_ip
+      description: Source IP of the threat
+      required: true
+    - name: target_ip
+      description: Target IP of the threat
+      required: false
+    - name: threat_type
+      description: Type of threat
+      required: true
+      predefined:
+      - DDoS
+      - Malware
+      - Phishing
+      - BruteForce
+      - SuspiciousConnection
+      - AnomalousBehavior
+      - IoCMatch
+    - name: threat_level
+      description: Threat level
+      required: false
+      predefined:
+      - Info
+      - Warning
+      - Critical
+      - Emergency
+      default: Warning
+    - name: context
+      description: Additional context about the threat
+      required: true
+    - name: network_flow
+      description: Network flow information
+      required: false
+    - name: geolocation
+      description: Geographic location
+      required: false
+    - name: agent_id
+      description: Agent ID submitting the threat
+      required: false
+    outputs:
+    - contextPath: OraSRS.Submission.SubmittedThreatID
+      description: ID of the submitted threat
+    - contextPath: OraSRS.Submission.Status
+      description: Submission status
+    - contextPath: OraSRS.Submission.Message
+      description: Submission message
+  - name: orasrs-get-upstream-intelligence
+    display: Get Upstream Intelligence
+    description: Retrieve upstream threat intelligence (e.g., from CISA AIS)
+    outputs:
+    - contextPath: OraSRS.UpstreamThreat.ID
+      description: Threat ID
+    - contextPath: OraSRS.UpstreamThreat.SourceType
+      description: Type of source
+    - contextPath: OraSRS.UpstreamThreat.ThreatType
+      description: Type of threat
+    - contextPath: OraSRS.UpstreamThreat.ThreatLevel
+      description: Threat level
+    - contextPath: OraSRS.UpstreamThreat.SourceIP
+      description: Source IP
+    - contextPath: OraSRS.UpstreamThreat.Timestamp
+      description: Timestamp
+    - contextPath: OraSRS.UpstreamThreat.ConfidenceScore
+      description: Confidence score
+    - contextPath: OraSRS.UpstreamThreat.Description
+      description: Threat description
+    - contextPath: OraSRS.UpstreamThreat.Source
+      description: Source of the threat
+fromversion: '6.0.0'
+dockerimage: demisto/python3:3.9.1.14969
+tests:
+- No tests (auto formatted)
